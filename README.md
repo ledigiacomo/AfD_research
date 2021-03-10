@@ -6,6 +6,7 @@ the last decade
 The project is broken up into a number of different scripts:
 
 1. twitter.py
+
 	This script takes as input a given number of twitter handles and time-range and queries 
 	Twitter API for the relevant tweets. These tweets are then parsed and stored as csv 
 	files. This is done to minimize the number of queries made as the Twitter API has 
