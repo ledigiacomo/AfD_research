@@ -14,19 +14,19 @@ The project is broken up into a number of different scripts:
 	or run multiple times
 
 	Each run is stored as 2 files, a csv and a cooresponding metadata file and 
-	each file is timestamped. The files are named query_results-<timestamp>.csv and
-	query_results-<timestamp>.md and are stored within a directory called Output. Each 
+	each file is timestamped. The files are named query_results-{timestamp}.csv and
+	query_results-{timestamp}.md and are stored within a directory called Output. Each 
 	is formatted as follows:
 
 		CSV:
 		handle,date,text
-		<handle_1>,<date_1>,<text_1>
+		{handle_1},{date_1},{text_1}
 
 		MD:
-		Time run: <time>
-		Handles queried: [<handles>]
-		Start time: <start_time>
-		End time: <end_time>
+		Time run: {time}
+		Handles queried: [{handles}]
+		Start time: {start_time}
+		End time: {end_time}
 
 	Currently, these values need to be updated by updating constant values at the top of 
 	the file and once updated can be run with: 
