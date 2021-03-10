@@ -2,6 +2,7 @@ import requests
 import os
 import json
 import sys
+import time
 
 # To set your environment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
@@ -13,7 +14,6 @@ START_TIME = "2015-01-01T00:00:00Z"
 END_TIME = "2017-12-31T23:59:59Z"
 search_url = "https://api.twitter.com/2/tweets/search/all"
 handles = [
-    "Alice_Weidel",
     "Tino_Chrupalla",
     "JoanaCotar",
     "GottfriedCurio",
@@ -23,7 +23,8 @@ handles = [
     "Marc_Jongen",
     "MdB_Lucassen",
     "Schneider_AfD",
-    "Rene_Springer"
+    "Rene_Springer",
+    "Alice_Weidel"
 ]
 
 def uprint(*objects, sep=' ', end='\n', file=sys.stdout):
@@ -43,14 +44,16 @@ def connect_to_endpoint(url, headers, params):
     print(response.status_code)
     if response.status_code != 200:
         raise Exception(response.status_code, response.text)
-    return response.json()
+    return response.status_code, response.json()
 
-def query_search_endpoint(handle):
+def query_search_endpoint(handle, next_token):
     headers = create_headers(bearer_token)
     query_params = {'query': '(from:' + handle + ')', 'start_time': START_TIME, 'end_time': END_TIME, 'tweet.fields': 'created_at'}
-
-    json_response = connect_to_endpoint(search_url, headers, query_params)
-    return json_response
+    if next_token:
+        query_params["next_token"] = next_token
+       
+    status, json_response = connect_to_endpoint(search_url, headers, query_params)
+    return status, json_response
 
 def parseResponse(handle, response):
     lines = []
@@ -66,10 +69,19 @@ def main():
     csvString = "handle,date,text\n"
 
     # for handle in handles:
-    response = query_search_endpoint(handles[0])
-    uprint(json.dumps(response, indent=4, sort_keys=True))
+    status, response = query_search_endpoint(handles[0], None)
 
-    csvString += parseResponse(handles[0], response)
+    if status == 200:
+        csvString += parseResponse(handles[0], response) + "\n"
+
+    while "next_token" in response["meta"]:
+        # Rate limit on API of 1 request/sec
+        time.sleep(1)
+
+        status, response = query_search_endpoint(handles[0], response["meta"]["next_token"])
+        if status == 200:
+            csvString += parseResponse(handles[0], response) + "\n"
+        
     uprint(csvString)
 
 if __name__ == "__main__":
