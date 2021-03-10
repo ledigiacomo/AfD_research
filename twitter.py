@@ -45,12 +45,17 @@ def connect_to_endpoint(url, headers, params):
     response = requests.request("GET", search_url, headers=headers, params=params)
     print(response.status_code)
     if response.status_code != 200:
-        raise Exception(response.status_code, response.text)
+        # Too many requests, wait 1 minute and try again
+        if response.status_code == 429:
+            time.sleep(60)
+            connect_to_endpoint(url, headers, params)
+        else:
+            raise Exception(response.status_code, response.text)
     return response.status_code, response.json()
 
 def query_search_endpoint(handle, next_token):
     headers = create_headers(bearer_token)
-    query_params = {'query': '(from:' + handle + ')', 'start_time': START_TIME, 'end_time': END_TIME, 'tweet.fields': 'created_at'}
+    query_params = {'query': '(from:' + handle + ')', 'start_time': START_TIME, 'end_time': END_TIME, 'tweet.fields': 'created_at', 'max_results': 100}
     if next_token:
         query_params["next_token"] = next_token
        
@@ -61,6 +66,10 @@ def parseResponse(handle, response):
     lines = []
 
     data = response.get("data")
+    if not data:
+        print("No data found for %s" % handle)
+        return ""
+
     for tweet in data:
         line = "%s,%s,%s" % (handle, tweet["created_at"], tweet["text"].replace('\n', "").replace(",", ""))
         lines.append(line)
@@ -78,7 +87,7 @@ def writeMdResults(timestamp):
         file.write("End time: %s\n" % END_TIME)
 
 def writeResults(results):
-    timestamp = datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d_%H-%M-%SZ')
+    timestamp = datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%dT%H-%M-%SZ')
 
     writeCsvResults(timestamp, results)
     writeMdResults(timestamp)
@@ -86,21 +95,20 @@ def writeResults(results):
 def main():
     csvString = "handle,date,text\n"
 
-    # for handle in handles:
-    status, response = query_search_endpoint(handles[0], None)
+    for handle in handles:
+        status, response = query_search_endpoint(handle, None)
 
-    if status == 200:
-        csvString += parseResponse(handles[0], response) + "\n"
-
-    while "next_token" in response["meta"]:
-        # Rate limit on API of 1 request/sec
-        time.sleep(1)
-
-        status, response = query_search_endpoint(handles[0], response["meta"]["next_token"])
         if status == 200:
-            csvString += parseResponse(handles[0], response) + "\n"
-        
-    uprint(csvString)
+            csvString += parseResponse(handle, response) + "\n"
+
+        while "meta" in response and "next_token" in response["meta"]:
+            # Rate limit on API of 1 request/sec
+            time.sleep(1)
+    
+            status, response = query_search_endpoint(handle, response["meta"]["next_token"])
+            if status == 200:
+                csvString += parseResponse(handle, response) + "\n"
+            
     writeResults(csvString)
 
 if __name__ == "__main__":
