@@ -58,9 +58,11 @@ To run this you will first need to set up an environment to do so. You will need
 	4. Type "cd IdeaProjects" to move to this location
 	5. Type "git clone https://github.com/ledigiacomo/AfD_research.git" to pull down the code
 	6. Type "cd AfD_research" to go into its directory 
+	7. Typing "ls" should show you the scripts
 
 #### Update & Run
 * If you followed the setup directions as above you can go to the code with the command: cd ~/IdeaProjects/AfD_research
 * From here you can run "git pull" to pull down the latest version of the code
 * Once this has completed you can run any python script with: py {script_name}.py
+	* You can see the scripts in the repo by running: ls
 
