@@ -3,6 +3,7 @@ import os
 import json
 import sys
 import time
+import datetime
 
 # To set your environment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
@@ -10,6 +11,7 @@ os.environ["BEARER_TOKEN"] = "AAAAAAAAAAAAAAAAAAAAALwMNAEAAAAAmr6bGyd7snmMMv9P4e
 bearer_token = os.environ.get("BEARER_TOKEN")
 
 # Constants:
+OUTPUT_DIR = "./Output/"
 START_TIME = "2015-01-01T00:00:00Z"
 END_TIME = "2017-12-31T23:59:59Z"
 search_url = "https://api.twitter.com/2/tweets/search/all"
@@ -65,6 +67,22 @@ def parseResponse(handle, response):
 
     return "\n".join(lines)
 
+def writeCsvResults(timestamp, results):
+    with open("%squery_results-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+        file.write(results)
+
+def writeMdResults(timestamp):
+    with open("%squery_results-%s.md" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+        file.write("Handles queried: [%s]\n" % ",".join(handles))
+        file.write("Start time: %s\n" % START_TIME)
+        file.write("End time: %s\n" % END_TIME)
+
+def writeResults(results):
+    timestamp = datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%d_%H-%M-%SZ')
+
+    writeCsvResults(timestamp, results)
+    writeMdResults(timestamp)
+
 def main():
     csvString = "handle,date,text\n"
 
@@ -83,6 +101,7 @@ def main():
             csvString += parseResponse(handles[0], response) + "\n"
         
     uprint(csvString)
+    writeResults(csvString)
 
 if __name__ == "__main__":
     main()
