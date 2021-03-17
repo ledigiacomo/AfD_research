@@ -12,8 +12,8 @@ bearer_token = os.environ.get("BEARER_TOKEN")
 
 # Constants:
 OUTPUT_DIR = "./Output/"
-START_TIME = "2015-01-01T00:00:00Z"
-END_TIME = "2017-12-31T23:59:59Z"
+START_TIME = "2013-01-01T00:00:00Z"
+END_TIME = "2020-12-31T23:59:59Z"
 search_url = "https://api.twitter.com/2/tweets/search/all"
 handles = [
     "Tino_Chrupalla",
