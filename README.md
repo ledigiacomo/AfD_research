@@ -42,6 +42,16 @@ The project is broken up into a number of different scripts:
 #### Environment
 
 To run this you will first need to set up an environment to do so. You will need to install a number of pieces of software:
+* Sublime Text Editor
+	1. Download installer: https://www.sublimetext.com/3
+		* download to C:\Program Files\Sublime Text 3\
+	2. Add binary to system path
+		1. Press the windows key
+		2. Type "environment variables"
+		3. Select "Edit the System Environment Variables"
+		4. Click the "Environment Variables" button
+		5. Under "System variables", double-click Path
+		6. Add C:\Program Files\Sublime Text 3\ to the variable
 * Git Bash
 	1. Download installer: https://git-scm.com/download/win
 	2. Run installer using recommended settings
@@ -50,7 +60,6 @@ To run this you will first need to set up an environment to do so. You will need
 	2. Run installer with recommended settings
 		* Note: Make sure to check the option to add python to your path variable
 	3. Open Git Bash and run "py --version" to ensure it is set up correctly 
-
 * Code repo:
 	1. Open Git Bash
 	2. Type "cd ~" to go to your home area
@@ -58,11 +67,13 @@ To run this you will first need to set up an environment to do so. You will need
 	4. Type "cd IdeaProjects" to move to this location
 	5. Type "git clone https://github.com/ledigiacomo/AfD_research.git" to pull down the code
 	6. Type "cd AfD_research" to go into its directory 
-	7. Typing "ls" should show you the scripts
+		* Typing "ls" should show you the scripts
+		* You can open any of the scripts with: subl {script_name}.py
 
 #### Update & Run
 * If you followed the setup directions as above you can go to the code with the command: cd ~/IdeaProjects/AfD_research
 * From here you can run "git pull" to pull down the latest version of the code
 * Once this has completed you can run any python script with: py {script_name}.py
 	* You can see the scripts in the repo by running: ls
+	* You can open any of the scripts with: subl {script_name}.py
 
