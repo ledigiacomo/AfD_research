@@ -87,9 +87,23 @@ def filterResults(results):
 
 	return filteredResults
 
+# Creates the csv and MD files with the results of a run
+# 
+# The files are named query_results-<timestamp>.csv and query_results-<timestamp>.md
+def writeResults(results):
+    timestamp = datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%dT%H-%M-%SZ')
+
+    writeCsvResults(timestamp, results)
+    writeMdResults(timestamp)
+
 def writeCsvResults(timestamp, results):
 	with open("%squery_results-%s-filtered.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
 		file.write(results)
+
+def writeMdResults(timestamp):
+    with open("%squery_results-%s-filtered.md" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+        file.write("File filtered: %s\n" % FILE_TO_FILTER)
+        file.write("Filter list: [%s]\n" % ",".join(words))
 
 def main():
 	with open(FILE_TO_FILTER, encoding="utf-8") as f:
@@ -100,7 +114,7 @@ def main():
 		filteredResults = filterResults(results)
 		print("Found %d tweets that contained atleast 1 word of interest" % len(filteredResults))
 
-		writeCsvResults(datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%dT%H-%M-%SZ'), csvString + "\n".join(filteredResults))
+		writeResults(csvString + "\n".join(filteredResults))
 
 if __name__ == "__main__":
 	main()
