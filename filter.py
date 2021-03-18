@@ -3,7 +3,7 @@ import time
 import datetime
 
 OUTPUT_DIR = "./Output/"
-FILE_TO_FILTER = "./Output/query_results-2021-03-17T19-15-30Z.csv"
+FILE_TO_FILTER = "./Output/query_results-2021-03-18T16-12-09Z.csv"
 
 words = [
 	"Einwanderer",

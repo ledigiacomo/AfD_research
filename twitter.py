@@ -16,17 +16,44 @@ START_TIME = "2013-01-01T00:00:00Z"
 END_TIME = "2020-12-31T23:59:59Z"
 search_url = "https://api.twitter.com/2/tweets/search/all"
 handles = [
+    "Alice_Weidel",
+    "FraukePetry",
+    "BjoernHoecke",
+    "Beatrix_vStorch",
+    "BerndLucke",
+    "Joerg_Meuthen",
+    "PoggenburgAndre",
+    "MarcusPretzell",
+    "AndreasKalbitz",
+    "Uwe_Junge_MdL",
+    "DrKonradAdam",
     "Tino_Chrupalla",
-    "JoanaCotar",
-    "GottfriedCurio",
-    "DrMEspendiller",
-    "PeterFelser",
-    "Martin_Hess_AfD",
     "Marc_Jongen",
     "MdB_Lucassen",
     "Schneider_AfD",
     "Rene_Springer",
-    "Alice_Weidel"
+    "BerndBaumannAfD",
+    "StBrandner",
+    "Leif_Erik_Holm",
+    "Martin_Hess_AfD",
+    "PeterFelser",
+    "DrMEspendiller",
+    "JoanaCotar",
+    "GottfriedCurio",
+    "andreasbleckmdb",
+    "PeterBoehringer",
+    "JuergenBraunAfD",
+    "Buettner_MdB",
+    "ElsnervonGronow",
+    "DrFriesenMdB",
+    "Paul_Hampel_BT",
+    "M_HarderKuehnel",
+    "Jochen_Haug",
+    "SteffenKotre",
+    "S_Muenzenmaier",
+    "Gerold_Otten",
+    "AfDProtschka",
+    "h_weyel"
 ]
 
 # Function to print unrecognized Unicode characters
@@ -46,14 +73,19 @@ def create_headers(bearer_token):
 def connect_to_endpoint(url, headers, params):
     response = requests.request("GET", search_url, headers=headers, params=params)
     print(response.status_code)
-    if response.status_code != 200:
+    if not response or not response.json() or response.status_code != 200:
         # Too many requests, wait 1 minute and try again
         if response.status_code == 429:
             time.sleep(60)
             connect_to_endpoint(url, headers, params)
         else:
             raise Exception(response.status_code, response.text)
-    return response.status_code, response.json()
+
+    try:
+        return response.status_code, response.json()
+    except:
+        print("Error parsing response json: %s - %s" % (response.status_code, response.text))
+        return response.status_code, None
 
 # Creates the request for the Twitter API
 def query_search_endpoint(handle, next_token):
@@ -117,14 +149,14 @@ def main():
     for handle in handles: # Go through each handle in thelist
         status, response = query_search_endpoint(handle, None) # Query Twitter API for handle's tweets
 
-        if status == 200:
+        if status == 200 and response:
             csvString += parseResponse(handle, response) + "\n" # Parse and store the results
 
-        while "meta" in response and "next_token" in response["meta"]: #If there are more results ask for them
+        while response is not None and "meta" in response and "next_token" in response["meta"]: #If there are more results ask for them
             time.sleep(1) # Rate limit on API of 1 request/sec
     
             status, response = query_search_endpoint(handle, response["meta"]["next_token"])
-            if status == 200:
+            if status == 200 and response:
                 csvString += parseResponse(handle, response) + "\n" # Parse and store the results
             
     writeResults(csvString) # Create the csv and md files with the results
