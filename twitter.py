@@ -84,8 +84,12 @@ def connect_to_endpoint(url, headers, params):
     try:
         return response.status_code, response.json()
     except:
-        print("Error parsing response json: %s - %s" % (response.status_code, response.text))
-        return response.status_code, None
+        if response.status_code == 429:
+            time.sleep(60)
+            return connect_to_endpoint(url, headers, params)
+        else:
+            print("Error parsing response json: %s - %s" % (response.status_code, response.text))
+            return response.status_code, None
 
 # Creates the request for the Twitter API
 def query_search_endpoint(handle, next_token):
@@ -94,8 +98,7 @@ def query_search_endpoint(handle, next_token):
     if next_token:
         query_params["next_token"] = next_token
        
-    status, json_response = connect_to_endpoint(search_url, headers, query_params)
-    return status, json_response
+    return connect_to_endpoint(search_url, headers, query_params)
 
 # Parses the API response and formats the results into a csv format
 #
@@ -149,7 +152,7 @@ def main():
     for handle in handles: # Go through each handle in thelist
         status, response = query_search_endpoint(handle, None) # Query Twitter API for handle's tweets
 
-        if status == 200 and response:
+        if status == 200 and response is not None:
             csvString += parseResponse(handle, response) + "\n" # Parse and store the results
 
         while response is not None and "meta" in response and "next_token" in response["meta"]: #If there are more results ask for them
