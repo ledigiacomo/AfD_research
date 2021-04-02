@@ -81,7 +81,7 @@ def filterResults(results):
 	filteredResults = []
 	for result in results:
 		for word in words:
-			if word in result:
+			if word.lower() in result.lower():
 				filteredResults.append(result)
 				break
 
