@@ -3,7 +3,7 @@ import time
 import datetime
 
 OUTPUT_DIR = "./Output/"
-TWEET_FILE = "./Output/query_results-2021-03-18T20-06-14Z-filtered.csv"
+TWEET_FILE = "./Output/query_results-2021-05-07T18-56-57Z-filtered.csv"
 
 # Function to print unrecognized Unicode characters
 def uprint(*objects, sep=' ', end='\n', file=sys.stdout):
