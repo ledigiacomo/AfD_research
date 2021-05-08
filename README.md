@@ -58,10 +58,10 @@ The project is broken up into a number of different scripts:
 	to be updated on each run. 
 
 	Additionally, an environment variable needs to be set up before running the script which points to 
-	the key needed to access the api. This key can be found at {path_to_project}/conf/afd-research-313019-e0b651df971f.json.
+	the key needed to access the api. This key can be found at {path_to_project}/conf/{json_credential_file}.
 	The variable can be set via:
 
-		export GOOGLE_APPLICATION_CREDENTIALS="{path_to_project}/conf/afd-research-313019-e0b651df971f.json"
+		export GOOGLE_APPLICATION_CREDENTIALS="{path_to_project}/conf/{json_credential_file}"
 
 	The script can then be run via:
 
@@ -101,7 +101,7 @@ The project is broken up into a number of different scripts:
 	to be updated on each run. 
 
 	Additionally, an environment variable needs to be set up before running the script which points to 
-	the key needed to access the api. This key can be found at {path_to_project}/conf/afd-research-313019-e0b651df971f.json.
+	the key needed to access the api. This key can be found at {path_to_project}/conf/{json_credential_file}.
 	The variable can be set via:
 
 		export GOOGLE_APPLICATION_CREDENTIALS="{path_to_project}/conf/{json_credential_file}"
