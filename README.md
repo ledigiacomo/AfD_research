@@ -67,6 +67,49 @@ The project is broken up into a number of different scripts:
 
 		py sentiment.py
 
+5. sentiment_average.py
+	
+	This script takes the output from the sentiment.py script and averages the results of 
+	the each tweet score and magnitude value per month for each handle. The results from this
+	are stored in an output file, sentiment_monthly_average-{timestamp}.csv. It is formatted as follows:
+
+		CSV:
+		handle,{MM/YYYY},tweet_count,average_sentiment,average_magnitude
+		{handle_1},{date_1},{count_1},{avg_sentiment_1},{avg_magnitude_1}
+
+	The file to be processed is stored as a constant value at the top of the script and needs
+	to be updated on each run. 
+
+	The script can then be run via:
+
+		py sentiment_average.py
+
+6. monthly_sentiemnt.py
+
+	This script takes all of the tweets for each given handle, consolidates the text 
+	of all of their tweets for each month, and then queries the sentiment analysis 
+	for the combined text data. The goal of this is to give the sentiment analysis
+	tooling more context for the tweets in generating a score and magnitude. The results
+	from this script are stored in an output file, sentiment_monthly-{timestamp}.csv. 
+	It is formatted as follows: 
+
+		CSV:
+		handle,{MM/YYYY},tweet_count,score,magnitude
+		{handle_1},{date_1},{count_1},{score},{magnitude}
+
+	The file to be processed is stored as a constant value at the top of the script and needs
+	to be updated on each run. 
+
+	Additionally, an environment variable needs to be set up before running the script which points to 
+	the key needed to access the api. This key can be found at {path_to_project}/conf/afd-research-313019-e0b651df971f.json.
+	The variable can be set via:
+
+		export GOOGLE_APPLICATION_CREDENTIALS="{path_to_project}/conf/{json_credential_file}"
+
+	The script can then be run via:
+
+		py monthly_sentiment.py
+
 ## Setup
 
 #### Environment
