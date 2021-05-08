@@ -37,6 +37,36 @@ The project is broken up into a number of different scripts:
 
 		py twitter.py
 
+4. sentiment.py
+	
+	This script takes the filtered tweets as input and send requests for each to the Google
+	Cloud Language API. This returns a magnitude and sentiment for each tweet a decription of 
+	which can be found at: https://cloud.google.com/natural-language/docs/basics#interpreting_sentiment_analysis_values
+
+	This will output 2 files, a csv and a cooresponding metadata file each of which are timestamped.
+	The files are named sentiment_results-{timestamp}.csv and sentiment_results-{timestamp}.md and 
+	both are stored within a directory called Output. They are formatted as follows:
+
+		CSV:
+		handle,date,text,sentiment,magnitude
+		{handle_1},{date_1},{text_1}
+
+		MD:
+		File: {file}
+
+	The file to be processed is stored as a constant value at the top of the script and needs
+	to be updated on each run. 
+
+	Additionally, an environment variable needs to be set up before running the script which points to 
+	the key needed to access the api. This key can be found at {path_to_project}/conf/afd-research-313019-e0b651df971f.json.
+	The variable can be set via:
+
+		export GOOGLE_APPLICATION_CREDENTIALS="{path_to_project}/conf/afd-research-313019-e0b651df971f.json"
+
+	The script can then be run via:
+
+		py sentiment.py
+
 ## Setup
 
 #### Environment
