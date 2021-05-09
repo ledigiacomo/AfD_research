@@ -37,6 +37,42 @@ The project is broken up into a number of different scripts:
 
 		py twitter.py
 
+2. filter.py
+
+	This script parses the file of full tweets and filters them out leaving only those 
+	containing a word of interest. Both the file to filter and list of words of interest
+	are stored as variables at the top of the script. This script outputs the results to 
+	two files, query_results-{timestamp}-filtered.csv and query_results-{timestamp}-filtered.md.
+	The files are formatted as follows:
+
+		CSV:
+		handle,date,tweet
+		{handle_1},{date_1},{tweet_1}
+
+		MD:
+		File filtered: {file}
+		Filter list: [{word_1}, {word_2}, ..., {word_n}]
+
+	This script can be run with:
+
+		py filter.py
+
+3. tweet_count.py
+
+	This script takes the tweets filtered by filter.py, and groups them by handle and
+	month tweeted yielding a table that gives a count for how many tweets were tweeted
+	by each account in each month. The results are saved as a file, tweet_count_results-{timestamp}.csv
+	which is formatted as follows:
+
+		CSV:
+		handle,{MM/YYYY},tweet_count
+		{handle_1},{date_1},{count_1}
+
+	The script takes a file to count as a parameter as given by a variable at the top of the script and
+	can be run via:
+
+		py tweet_count.py
+
 4. sentiment.py
 	
 	This script takes the filtered tweets as input and send requests for each to the Google
@@ -109,6 +145,23 @@ The project is broken up into a number of different scripts:
 	The script can then be run via:
 
 		py monthly_sentiment.py
+
+7. generate_sample.py
+
+	This script filters through the full list of tweets, pulling out those that do not 
+	contain a word of interest. It then goes through these filtered tweets and simply pulls
+	out every 5th word to obtain a simple sample that is not representitive of the monthly
+	distribution of the tweets. The list of tweets is stored in an output file, 
+	random_sample-{timestamp}.csv and random_sample-{timestamp}.md which are formatted as follows:
+
+		CSV:
+		handle,date,tweet
+		{handle_1},{date_1},{tweet_1}
+
+		MD:
+		File filtered: {file}
+		Filter list: [{word_1}, {word_2}, ..., {word_n}]
+		Percentage sampled: {sample_percent}%
 
 ## Setup
 
