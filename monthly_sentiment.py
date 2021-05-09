@@ -5,7 +5,13 @@ import time
 import datetime
 
 OUTPUT_DIR = "./Output/"
-TWEET_FILE = "./Output/query_results-2021-05-07T18-56-57Z-filtered.csv"
+
+SAMPLE = True
+
+if SAMPLE:
+    TWEET_FILE = "./Output/random_sample-2021-05-09T15-10-40Z.csv"
+else:
+	TWEET_FILE = "./Output/query_results-2021-05-07T18-56-57Z-filtered.csv"
 
 # Function to print unrecognized Unicode characters
 def uprint(*objects, sep=' ', end='\n', file=sys.stdout):
@@ -74,8 +80,13 @@ def analyze(tweetsByMonth):
 
 def writeResults(results):
 	timestamp = datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%dT%H-%M-%SZ')
-	with open("%ssentiment_monthly-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
-		file.write("\n".join(results))
+
+	if SAMPLE:
+		with open("%ssentiment_monthly-SAMPLE-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+			file.write("\n".join(results))
+	else:
+		with open("%ssentiment_monthly-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+			file.write("\n".join(results))
 
 def main():
 	with open(TWEET_FILE, encoding="utf-8") as f:

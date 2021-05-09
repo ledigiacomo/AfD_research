@@ -3,7 +3,13 @@ import time
 import datetime
 
 OUTPUT_DIR = "./Output/"
-SENTIMENT_FILE = "./Output/sentiment_results-2021-05-08T00-12-36Z.csv"
+
+SAMPLE = True
+
+if SAMPLE:
+    SENTIMENT_FILE = "./Output/sentiment_results-SAMPLE-2021-05-09T16-43-11Z.csv"
+else:
+	SENTIMENT_FILE = "./Output/sentiment_results-2021-05-08T00-12-36Z.csv"
 
 # Function to print unrecognized Unicode characters
 def uprint(*objects, sep=' ', end='\n', file=sys.stdout):
@@ -58,8 +64,13 @@ def writeResults(results):
 			lines.append("%s,%s,%s,%s,%s" % (handle, monthYear, count, average_score, average_magnitude))
 
 	timestamp = datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%dT%H-%M-%SZ')
-	with open("%ssentiment_monthly_averages-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
-		file.write("\n".join(lines))
+
+	if SAMPLE:
+		with open("%ssentiment_monthly_averages-SAMPLE-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+			file.write("\n".join(lines))
+	else:
+		with open("%ssentiment_monthly_averages-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+			file.write("\n".join(lines))
 
 def main():
 	with open(SENTIMENT_FILE, encoding="utf-8") as f:

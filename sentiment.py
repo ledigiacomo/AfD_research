@@ -5,7 +5,12 @@ import time
 import datetime
 
 OUTPUT_DIR = "./Output/"
-TWEET_FILE = "./Output/query_results-2021-05-07T18-56-57Z-filtered.csv"
+SAMPLE = True
+
+if SAMPLE:
+    TWEET_FILE = "./Output/random_sample-2021-05-09T15-10-40Z.csv"
+else:
+    TWEET_FILE = "./Output/query_results-2021-05-07T18-56-57Z-filtered.csv"
 
 """
     Analyzing Sentiment in a String
@@ -41,12 +46,20 @@ def analyzeIndividual(results):
     return analysis
 
 def writeCsvResults(timestamp, analysis):
-    with open("%ssentiment_results-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
-        file.write("\n".join(analysis))
+    if SAMPLE:
+        with open("%ssentiment_results-SAMPLE-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+            file.write("\n".join(analysis))
+    else:
+        with open("%ssentiment_results-%s.csv" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+            file.write("\n".join(analysis))
 
 def writeMdResults(timestamp):
-    with open("%ssentiment_results-%s.md" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
-        file.write("File: %s\n" % TWEET_FILE)
+    if SAMPLE:
+        with open("%ssentiment_results-SAMPLE-%s.md" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+            file.write("File: %s\n" % TWEET_FILE)
+    else:
+        with open("%ssentiment_results-%s.md" % (OUTPUT_DIR, timestamp), "w", encoding="utf-8") as file:
+            file.write("File: %s\n" % TWEET_FILE)
 
 def writeResults(analysis):
     timestamp = datetime.datetime.utcfromtimestamp(time.time()).strftime('%Y-%m-%dT%H-%M-%SZ')
