@@ -9,9 +9,9 @@ OUTPUT_DIR = "./Output/"
 SAMPLE = True
 
 if SAMPLE:
-    TWEET_FILE = "./Output/random_sample-2021-05-09T15-10-40Z.csv"
+    TWEET_FILE = "./Output/random_sample-2021-05-10T15-08-09Z.csv"
 else:
-	TWEET_FILE = "./Output/query_results-2021-05-07T18-56-57Z-filtered.csv"
+	TWEET_FILE = "./Output/query_results-2021-05-10T14-15-58Z-filtered.csv"
 
 # Function to print unrecognized Unicode characters
 def uprint(*objects, sep=' ', end='\n', file=sys.stdout):

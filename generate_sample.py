@@ -3,7 +3,7 @@ import time
 import datetime
 
 OUTPUT_DIR = "./Output/"
-FILE_TO_FILTER = "./Output/query_results-2021-03-18T19-50-31Z.csv"
+FILE_TO_FILTER = "./Output/query_results-2021-05-10T13-54-07Z.csv"
 SAMPLE_SIZE = 5
 
 words = [

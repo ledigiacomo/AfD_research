@@ -7,9 +7,9 @@ OUTPUT_DIR = "./Output/"
 SAMPLE = True
 
 if SAMPLE:
-    SENTIMENT_FILE = "./Output/sentiment_results-SAMPLE-2021-05-09T16-43-11Z.csv"
+    SENTIMENT_FILE = "./Output/sentiment_results-SAMPLE-2021-05-10T16-57-43Z.csv"
 else:
-	SENTIMENT_FILE = "./Output/sentiment_results-2021-05-08T00-12-36Z.csv"
+	SENTIMENT_FILE = "./Output/sentiment_results-2021-05-10T15-02-22Z.csv"
 
 # Function to print unrecognized Unicode characters
 def uprint(*objects, sep=' ', end='\n', file=sys.stdout):
